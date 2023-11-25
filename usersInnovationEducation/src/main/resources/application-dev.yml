@@ -1,0 +1,23 @@
+server:
+  port: 8080
+logging:
+  level:
+    org.springframework.security: DEBUG
+    io.jsonwebtoken: DEBUG
+spring:
+  datasource:
+    url: jdbc:mysql://localhost/betek_users
+    username: root
+    password: b3192621119B
+  jpa:
+    hibernate:
+      ddl-auto: update
+jwt:
+  secret: ${KEYSECRET_SECURITY:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IlJlZEVBbWVyaWNhIEJlVGVrIiwiaWF0IjoxNTE2MjM5MDIyfQ.S1jD88aavunG-gnes5L_hk-qC1w2ku5behPjhpkpQSo}
+  expiration: ${EXPIRE_DAYS_SECURITY:3600000}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
