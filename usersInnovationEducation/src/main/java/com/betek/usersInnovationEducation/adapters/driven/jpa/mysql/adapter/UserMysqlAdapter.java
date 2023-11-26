@@ -60,9 +60,10 @@ public class UserMysqlAdapter implements IUserPersistencePort {
             UserEntity userEntity = userEntityMapper.toUserEntity(user);
             ProfileEntity profileEntity = profileEntityMapper.toProfileEntity(profile);
 
-            userEntity.setUpdated_at(LocalDate.now());
+//            userEntity.setUpdated_at(LocalDate.now());
             userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
-            profileEntity.setId(id);
+
+//            profileEntity.setId(id);
 
             userRepository.save(userEntity);
             profileRepository.save(profileEntity);
@@ -101,7 +102,7 @@ public class UserMysqlAdapter implements IUserPersistencePort {
     @Override
     public void saveUser(User user) {
         UserEntity userEntity = userEntityMapper.toUserEntity(user);
-        userEntity.setUpdated_at(LocalDate.now());
+//        userEntity.setUpdated_at(LocalDate.now());
         userRepository.save(userEntity);
     }
 //
@@ -114,8 +115,8 @@ public class UserMysqlAdapter implements IUserPersistencePort {
 
     // -----
 
-    public CountryEntity findByIdCountry(Long id){
-        CountryEntity countryEntity = countryRepository.findById(id).orElseThrow();
-        return countryEntity;
-    }
+
+    //TODO: SI REALIZO UN REGISTRO DE USUARIO Y REGISTRO CON MISMO MEMBER_NAME UN USER, ESTALLA LA APP, CORREGIR.
+    //TODO: SI SE ACTUALIZA UN USUARIO, DEBE VOLVER A INICIAR SESION EN LA PAGINA DE INICIO. TAMBIEN REVIENTA LA APP
+
 }

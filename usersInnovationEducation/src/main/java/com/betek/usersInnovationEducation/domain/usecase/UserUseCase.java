@@ -9,6 +9,8 @@ import com.betek.usersInnovationEducation.domain.model.Profile;
 import com.betek.usersInnovationEducation.domain.model.User;
 import com.betek.usersInnovationEducation.domain.spi.IUserPersistencePort;
 
+import java.time.LocalDate;
+
 public class UserUseCase implements IUserServicePort {
     private final IUserPersistencePort userPersistencePort;
     private final IAuthenticationUserInfoServicePort authenticationUserInfoServicePort;
@@ -47,9 +49,13 @@ public class UserUseCase implements IUserServicePort {
             useToChange.setMember_name(userUpdateRequestDto.getUserRequestDto().getMember_name());
             useToChange.setEmail(userUpdateRequestDto.getUserRequestDto().getEmail());
             useToChange.setPassword(userUpdateRequestDto.getUserRequestDto().getPassword());
+            useToChange.setIs_admin(false);
+            useToChange.setState(true);
+            useToChange.setUpdated_at(LocalDate.now());
             useToChange.setPhone(userUpdateRequestDto.getUserRequestDto().getPhone());
             useToChange.setIdCountry(userUpdateRequestDto.getUserRequestDto().getIdCountry());
 
+            profileToChange.setId(idUser);
             profileToChange.setDescription(userUpdateRequestDto.getProfileRequestDto().getDescription());
             profileToChange.setProfile_image(userUpdateRequestDto.getProfileRequestDto().getDescription());
             profileToChange.setLink_website(userUpdateRequestDto.getProfileRequestDto().getLink_website());
@@ -75,9 +81,11 @@ public class UserUseCase implements IUserServicePort {
         User user = userPersistencePort.findByIdUser(idUser);
         if(user.getState() == true){
             user.setState(false);
+            user.setUpdated_at(LocalDate.now());
             userPersistencePort.saveUser(user);
         } else if (user.getState() == false) {
             user.setState(true);
+            user.setUpdated_at(LocalDate.now());
             userPersistencePort.saveUser(user);
         }
 

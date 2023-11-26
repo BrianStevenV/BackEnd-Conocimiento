@@ -1,4 +1,7 @@
 package com.betek.usersInnovationEducation.domain.model;
+
+import java.time.LocalDate;
+
 public class User {
     private Long id;
     private String member_name;
@@ -11,22 +14,27 @@ public class User {
     private Boolean state;
 
     /// ------- .
-
+    private LocalDate updated_at;
 
     private Boolean is_admin;
     // ----- > HERE UP
     private Long idCountry;
 
-    public User(Long id, String member_name, String email, String password, String phone, Boolean state, Boolean is_admin, Long idCountry) {
+    public User(Long id, String member_name, String email, String password, String phone, Boolean state, LocalDate updated_at, Boolean is_admin, Long idCountry) {
         this.id = id;
         this.member_name = member_name;
         this.email = email;
         this.password = password;
         this.phone = phone;
         this.state = state;
+        this.updated_at = updated_at;
         this.is_admin = is_admin;
         this.idCountry = idCountry;
     }
+
+    public User() {
+    }
+
     // TODO SE PUEDE QUITAR DEL CONSTRUCTOR ID, Y FORMARLO UNICAMENTE EN PERSISTENCIA.
 
 
@@ -85,10 +93,20 @@ public class User {
 
 
 
-
     // ------->
 
 
+    public LocalDate getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(LocalDate updated_at) {
+        this.updated_at = updated_at;
+    }
+
+
+
+    // ------ >
     public Boolean getIs_admin() {
         return is_admin;
     }
@@ -99,6 +117,8 @@ public class User {
 
 
     // ----- > HERE UP
+
+
     public Long getIdCountry() {
         return idCountry;
     }
