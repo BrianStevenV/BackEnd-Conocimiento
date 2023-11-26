@@ -40,7 +40,6 @@ public class UserMysqlAdapter implements IUserPersistencePort {
         if (userRepository.existsByEmail(user.getEmail())){
             throw new MailAlreadyExistsException();
         }
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(userEntityMapper.toUserEntity(user));
     }

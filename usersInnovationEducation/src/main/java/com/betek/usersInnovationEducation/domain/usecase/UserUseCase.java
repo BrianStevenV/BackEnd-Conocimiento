@@ -20,6 +20,8 @@ public class UserUseCase implements IUserServicePort {
 
     @Override
     public void createUser(User user) {
+        user.setState(true);
+        user.setIs_admin(false);
         userPersistencePort.createUser(user);
     }
 
