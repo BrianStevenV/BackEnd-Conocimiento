@@ -49,7 +49,6 @@ public class MainSecurity {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.disable())
                 .formLogin(formLogin -> formLogin.disable())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -66,6 +65,4 @@ public class MainSecurity {
         return http.build();
     }
 
-
-    //TODO: confirm .formLogin() configuration
 }
