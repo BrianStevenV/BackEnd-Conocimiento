@@ -3,6 +3,7 @@ package com.betek.usersInnovationEducation.domain.usecase;
 import com.betek.usersInnovationEducation.adapters.driving.http.dto.request.ProfileRequestDto;
 import com.betek.usersInnovationEducation.adapters.driving.http.dto.request.UserRequestDto;
 import com.betek.usersInnovationEducation.adapters.driving.http.dto.request.UserUpdateRequestDto;
+import com.betek.usersInnovationEducation.adapters.driving.http.dto.response.ChooseUserResponseDto;
 import com.betek.usersInnovationEducation.domain.api.IAuthenticationUserInfoServicePort;
 import com.betek.usersInnovationEducation.domain.model.Profile;
 import com.betek.usersInnovationEducation.domain.model.User;
@@ -94,9 +95,26 @@ class UserUseCaseTest {
 
     }
 
-
     @Test
-    void getAnUserInformation() {
+    public void testGetAnUserInformation() {
+        // Arrange
+        when(authenticationUserInfoServicePort.getIdentifierUserFromToken()).thenReturn(123L);
+
+        User existingUser = new User();
+        existingUser.setId(123L);
+        existingUser.setIs_admin(true);
+        existingUser.setState(true);
+        when(userPersistencePort.getAnUserInformation(123L)).thenReturn(existingUser);
+
+        // Act
+        ChooseUserResponseDto result = userUseCase.getAnUserInformation();
+
+        // Assert
+        assertEquals(123L, result.getId());
+        assertTrue(result.getIs_admin());
+        assertTrue(result.getState());
+
+        verify(userPersistencePort).getAnUserInformation(123L);
     }
 
     @Test
