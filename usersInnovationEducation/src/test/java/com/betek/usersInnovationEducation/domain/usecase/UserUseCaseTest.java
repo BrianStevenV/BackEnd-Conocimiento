@@ -1,11 +1,16 @@
 package com.betek.usersInnovationEducation.domain.usecase;
 
+import com.betek.usersInnovationEducation.adapters.driving.http.dto.request.ProfileRequestDto;
+import com.betek.usersInnovationEducation.adapters.driving.http.dto.request.UserRequestDto;
+import com.betek.usersInnovationEducation.adapters.driving.http.dto.request.UserUpdateRequestDto;
 import com.betek.usersInnovationEducation.domain.api.IAuthenticationUserInfoServicePort;
 import com.betek.usersInnovationEducation.domain.model.Profile;
 import com.betek.usersInnovationEducation.domain.model.User;
 import com.betek.usersInnovationEducation.domain.spi.IUserPersistencePort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -41,18 +46,52 @@ class UserUseCaseTest {
     }
 
     @Test
-    public void testCreateProfile() {
-        // Arramge
-        Profile profile = new Profile();
-        when(authenticationUserInfoServicePort.getIdentifierUserFromToken()).thenReturn(123L); // Simulamos un ID de usuario obtenido del token
+    public void testUpdateAllInformation() {
+        // Arrange
+        UserUpdateRequestDto userUpdateRequestDto = new UserUpdateRequestDto();
+        UserRequestDto userRequestDto = new UserRequestDto();
+        ProfileRequestDto profileRequestDto = new ProfileRequestDto();
+        userRequestDto.setMember_name("Juancho");
+        userRequestDto.setEmail("john@example.com");
+        userRequestDto.setPassword("newpassword");
+        userRequestDto.setPhone("123456789");
+        userRequestDto.setIdCountry(1L);
+        profileRequestDto.setDescription("Updated description");
+        profileRequestDto.setProfile_image("image_url");
+        profileRequestDto.setLink_website("website_url");
+        userUpdateRequestDto.setUserRequestDto(userRequestDto);
+        userUpdateRequestDto.setProfileRequestDto(profileRequestDto);
 
         // Act
-        userUseCase.createProfile(profile);
+        when(authenticationUserInfoServicePort.getIdentifierUserFromToken()).thenReturn(123L);
+
+        User mockedUser = new User();
+        mockedUser.setMember_name("Juancho");
+        mockedUser.setEmail("john@example.com");
+        mockedUser.setPassword("newpassword");
+        mockedUser.setPhone("123456789");
+        mockedUser.setIdCountry(1L);
+
+        Profile mockedProfile = new Profile();
+        mockedProfile.setDescription("Updated description");
+        mockedProfile.setProfile_image("image_url");
+        mockedProfile.setLink_website("website_url");
+        when(userPersistencePort.findByIdUser(123L)).thenReturn(mockedUser);
+        when(userPersistencePort.findByIdProfile(123L)).thenReturn(mockedProfile);
+
+        userUseCase.updateAllInformation(userUpdateRequestDto);
 
         // Assert
-        assertEquals(123L, profile.getId());
+        assertEquals("Juancho", mockedUser.getMember_name());
+        assertEquals("john@example.com", mockedUser.getEmail());
+        assertEquals("newpassword", mockedUser.getPassword());
+        assertEquals("123456789", mockedUser.getPhone());
+        assertEquals(1L, mockedUser.getIdCountry());
 
-        verify(userPersistencePort).createProfile(profile);
+        assertEquals("Updated description", mockedProfile.getDescription());
+        assertEquals("image_url", mockedProfile.getProfile_image());
+        assertEquals("website_url", mockedProfile.getLink_website());
+
     }
 
     @Test
