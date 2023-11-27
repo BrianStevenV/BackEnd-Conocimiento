@@ -1,5 +1,8 @@
 package com.betek.usersInnovationEducation.domain.model;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class Profile {
     private Long id;
     private String description;
