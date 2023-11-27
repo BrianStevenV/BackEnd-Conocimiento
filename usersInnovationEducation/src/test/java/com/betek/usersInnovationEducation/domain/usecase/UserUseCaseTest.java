@@ -1,15 +1,14 @@
 package com.betek.usersInnovationEducation.domain.usecase;
 
 import com.betek.usersInnovationEducation.domain.api.IAuthenticationUserInfoServicePort;
+import com.betek.usersInnovationEducation.domain.model.Profile;
 import com.betek.usersInnovationEducation.domain.model.User;
 import com.betek.usersInnovationEducation.domain.spi.IUserPersistencePort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class UserUseCaseTest {
 
@@ -42,7 +41,18 @@ class UserUseCaseTest {
     }
 
     @Test
-    void createProfile() {
+    public void testCreateProfile() {
+        // Arramge
+        Profile profile = new Profile();
+        when(authenticationUserInfoServicePort.getIdentifierUserFromToken()).thenReturn(123L); // Simulamos un ID de usuario obtenido del token
+
+        // Act
+        userUseCase.createProfile(profile);
+
+        // Assert
+        assertEquals(123L, profile.getId());
+
+        verify(userPersistencePort).createProfile(profile);
     }
 
     @Test
