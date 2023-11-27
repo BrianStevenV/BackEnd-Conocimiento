@@ -94,15 +94,48 @@ class UserUseCaseTest {
 
     }
 
-    @Test
-    void updateAllInformation() {
-    }
 
     @Test
     void getAnUserInformation() {
     }
 
     @Test
-    void enabledAndDisableAccount() {
+    public void testEnabledAndDisableAccount_whenUserIsActive() {
+        // Arrange
+        when(authenticationUserInfoServicePort.getIdentifierUserFromToken()).thenReturn(123L);
+
+        User activeUser = new User();
+        activeUser.setId(123L);
+        activeUser.setState(true); // Usuario activo
+        when(userPersistencePort.findByIdUser(123L)).thenReturn(activeUser);
+
+        // Arrange
+        userUseCase.enabledAndDisableAccount();
+
+        // Assert
+        assertFalse(activeUser.getState());
+        assertEquals(LocalDate.now(), activeUser.getUpdated_at());
+
+        verify(userPersistencePort).saveUser(activeUser);
+    }
+
+    @Test
+    public void testEnabledAndDisableAccount_whenUserIsInactive() {
+        // Arrange
+        when(authenticationUserInfoServicePort.getIdentifierUserFromToken()).thenReturn(123L);
+
+        User inactiveUser = new User();
+        inactiveUser.setId(123L);
+        inactiveUser.setState(false); // Usuario inactivo
+        when(userPersistencePort.findByIdUser(123L)).thenReturn(inactiveUser);
+
+        // Act
+        userUseCase.enabledAndDisableAccount();
+
+        // Assert
+        assertTrue(inactiveUser.getState());
+        assertEquals(LocalDate.now(), inactiveUser.getUpdated_at());
+
+        verify(userPersistencePort).saveUser(inactiveUser);
     }
 }
